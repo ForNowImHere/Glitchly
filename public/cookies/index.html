@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cookie Jar</title>
+  <style>
+    body {
+      background-color: #222;
+      color: #eee;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    .upgrade {
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🍪 Cookie Jar</h1>
+  <p id="jarCount">Cookies: 0</p>
+  <div id="jarUpgrades"></div>
+  <script>
+    const jarCount = document.getElementById('jarCount');
+    const jarUpgrades = document.getElementById('jarUpgrades');
+
+    function renderJar() {
+      let cookieCount = parseFloat(localStorage.getItem('cookieCount')) || 0;
+      let upgrades = JSON.parse(localStorage.getItem('upgrades')) || {};
+      jarCount.textContent = `Cookies: ${Math.floor(cookieCount)}`;
+      jarUpgrades.innerHTML = '';
+
+      for (const key in upgrades) {
+        if (upgrades[key]) {
+          const el = document.createElement('div');
+          el.className = 'upgrade';
+          el.textContent = `${key} ✅`;
+          jarUpgrades.appendChild(el);
+        }
+      }
+    }
+
+    renderJar();
+    setInterval(renderJar, 500); // Refresh every half-second
+  </script>
+</body>
+</html>

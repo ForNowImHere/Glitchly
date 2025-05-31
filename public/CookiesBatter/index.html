@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyloveforCOOKIES!</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #eee;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    #cookie {
+      width: 200px;
+      height: 200px;
+      background-image: url('https://cdn.glitch.global/0997a615-3fd9-4695-93c0-a76d30799f2a/cookie.png?v=1748727114763');
+      background-size: cover;
+      margin: 30px auto;
+      border-radius: 50%;
+      transition: filter 0.3s ease;
+    }
+    #cookie.clicked {
+      filter: hue-rotate(120deg) brightness(1.3);
+    }
+    .clicker {
+      width: 40px;
+      height: 40px;
+      background: #f4c542;
+      border-radius: 50%;
+      position: absolute;
+      animation: spin 10s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg) translateX(250px) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(250px) rotate(-360deg); }
+    }
+    .upgrade {
+      background-color: #222;
+      border: 1px solid #444;
+      padding: 10px;
+      margin: 5px auto;
+      width: 300px;
+      cursor: pointer;
+    }
+    .bought::after {
+      content: ' ✅';
+      color: lime;
+    }
+  </style>
+</head>
+<body>
+  <h1>MyloveforCOOKIES!</h1>
+  <div id="cookie"></div>
+  <p id="count">Cookies: 0</p>
+  <div id="upgrades"></div>
+  <script>
+    let count = localStorage.getItem('cookieCount') || 0;
+    const cookie = document.getElementById('cookie');
+    const countDisplay = document.getElementById('count');
+    const upgradesDiv = document.getElementById('upgrades');
+    let cps = 0;
+    let visualClickers = [];
+
+    const upgrades = [
+      { name: "Grandma", cost: 50, cps: 1 },
+      { name: "Oven", cost: 100, cps: 3 },
+      { name: "Cookie Tree", cost: 500, cps: 10 },
+      { name: "Cookie Rocket", cost: 2000, cps: 30 },
+      { name: "Mixer", cost: 5000, cps: 75 },
+      { name: "Cookie Factory", cost: 20000, cps: 150 },
+      { name: "Glitchcore AI", cost: 50000, cps: 400 }
+    ];
+
+    function updateCountDisplay() {
+      countDisplay.textContent = `Cookies: ${Math.floor(count)}`;
+      localStorage.setItem('cookieCount', count);
+    }
+
+    function spawnVisualClicker() {
+      const c = document.createElement('div');
+      c.className = 'clicker';
+      document.body.appendChild(c);
+      visualClickers.push(c);
+    }
+
+    function updateUpgrades() {
+      upgradesDiv.innerHTML = '';
+      upgrades.forEach((upg, i) => {
+        const btn = document.createElement('div');
+        btn.className = 'upgrade';
+        btn.textContent = `${upg.name} (${upg.cost} cookies)`;
+        btn.onclick = () => {
+          if (count >= upg.cost) {
+            count -= upg.cost;
+            cps += upg.cps;
+            btn.classList.add('bought');
+            spawnVisualClicker();
+            upg.cost = Infinity; // one-time purchase for now
+            updateCountDisplay();
+          }
+        }
+        upgradesDiv.appendChild(btn);
+      });
+    }
+
+    cookie.addEventListener('click', () => {
+      count++;
+      cookie.classList.add('clicked');
+      setTimeout(() => cookie.classList.remove('clicked'), 100);
+      updateCountDisplay();
+    });
+
+    setInterval(() => {
+      count += cps / 10;
+      updateCountDisplay();
+    }, 100);
+
+    updateUpgrades();
+    updateCountDisplay();
+  </script>
+</body>
+</html>

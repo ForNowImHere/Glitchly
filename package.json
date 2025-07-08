@@ -4,7 +4,7 @@
   "description": "An offline-first web app builder like Glitch, with compression, editing, accounts, and a disk space bar.",
   "main": "server.js",
   "scripts": {
-    "build": "echo 'No build step required'",
+    "build": "echo 'Skipping build, no frontend build step required'",
     "start": "node server.js",
     "dev": "nodemon server.js"
   },

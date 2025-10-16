@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
   res.send(`
     <html style="background:#111;color:#eee;font-family:sans-serif">
       <body>
-        <h1>Glitchly</h1>
+        <h1>Glitchly i dont know why i am proving my self</h1>
         <p>Don’t overload the server! Save space wisely.</p>
         <p>Visit /edit/appname to edit, or /appname to view.</p>
       </body>
